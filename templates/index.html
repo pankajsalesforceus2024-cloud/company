@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    {% include "_icons.html" %}
 
     <!-- =========================================================
      LOADING SCREEN
@@ -102,15 +103,13 @@
             <div class="section-heading">
                 <p class="eyebrow">What We Build</p>
                 <h2>Services &amp; Products</h2>
-                <p class="section-sub">Placeholder product data — edit <code>PRODUCTS</code> in config.py to customize.
-                </p>
             </div>
             <div class="product-grid">
                 {% for p in products %}
                 <div class="product-card" style="--accent: {{ p.color }}">
                     <div class="product-icon-wrap">
                         <svg class="product-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <use href="{{ url_for('static', filename='img/icons.svg') }}#icon-{{ p.icon }}"></use>
+                            <use href="#icon-{{ p.icon }}"></use>
                         </svg>
                     </div>
                     <p class="product-tagline">{{ p.tagline }}</p>
@@ -134,7 +133,6 @@
             <div class="section-heading">
                 <p class="eyebrow">Our People</p>
                 <h2>Meet the Team</h2>
-                <p class="section-sub">Placeholder team — edit <code>TEAM</code> in config.py to customize.</p>
             </div>
             <div class="team-grid">
                 {% for member in team %}
@@ -158,7 +156,6 @@
             <div class="section-heading">
                 <p class="eyebrow">Get In Touch</p>
                 <h2>Let's Build Something Together</h2>
-                <p class="section-sub">Edit <code>CONTACT</code> in config.py to update these details.</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-info">

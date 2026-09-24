@@ -50,10 +50,62 @@
             height: 42px;
             padding: 4px !important;
         }
+
+        .icon-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+            gap: 10px;
+        }
+
+        .icon-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .icon-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .icon-swatch {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--dark-bg-2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+        }
+
+        .icon-swatch svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .icon-option input:checked+.icon-swatch {
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 20%, transparent);
+            color: var(--accent);
+        }
+
+        .icon-name {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: capitalize;
+        }
     </style>
 </head>
 
 <body>
+    {% include "_icons.html" %}
     <header class="admin-header">
         <div class="nav-logo">
             <span class="logo-mark">{{ company.logo_initials }}</span>
@@ -78,17 +130,23 @@
                     value="{{ product.tagline if product else '' }}" required></div>
             <div class="form-group"><label>Description</label><textarea name="description" rows="4"
                     required>{{ product.description if product else '' }}</textarea></div>
-            <div class="field-row">
-                <div class="form-group"><label>Price (display text)</label><input type="text" name="price"
-                        value="{{ product.price if product else '' }}" placeholder="$199/mo" required></div>
-                <div class="form-group">
-                    <label>Icon</label>
-                    <select name="icon">
-                        {% for icon in icons %}
-                        <option value="{{ icon }}" {{ 'selected' if product and product.icon==icon else '' }}>{{ icon }}
-                        </option>
-                        {% endfor %}
-                    </select>
+            <div class="form-group"><label>Price (display text)</label><input type="text" name="price"
+                    value="{{ product.price if product else '' }}" placeholder="$199/mo" required></div>
+            <div class="form-group">
+                <label>Icon</label>
+                <div class="icon-picker">
+                    {% for icon in icons %}
+                    <label class="icon-option">
+                        <input type="radio" name="icon" value="{{ icon }}" {{ 'checked' if (product and
+                            product.icon==icon) or (not product and loop.first) else '' }}>
+                        <span class="icon-swatch">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <use href="#icon-{{ icon }}"></use>
+                            </svg>
+                        </span>
+                        <span class="icon-name">{{ icon }}</span>
+                    </label>
+                    {% endfor %}
                 </div>
             </div>
             <div class="field-row">

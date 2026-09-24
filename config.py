@@ -44,7 +44,7 @@ COMPANY = {
 # -----------------------------------------------------------------------------
 ADMIN = {
     "username": "admin",
-    "password": "changeme123",   # TODO: change this before deploying
+    "password": "admin",   # TODO: change this before deploying
 }
 SECRET_KEY = "dev-secret-key-change-me"  # TODO: replace in production
 
