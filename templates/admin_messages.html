@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Messages — {{ company.name }} Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .admin-main {
+            padding: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .admin-back {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .admin-table th {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-table tr.unread {
+            background: rgba(91, 140, 255, 0.06);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-unread {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .badge-read {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row-actions form {
+            display: inline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="nav-logo">
+            <span class="logo-mark">{{ company.logo_initials }}</span>
+            <span class="logo-text">{{ company.name }} Admin</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Logged in as {{ admin_username }}</span>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-small">Log Out</a>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <a href="{{ url_for('admin_dashboard') }}" class="admin-back">&larr; Back to Dashboard</a>
+        <div class="section-heading" style="text-align:left; margin-bottom: 28px;">
+            <p class="eyebrow">Contact Inbox</p>
+            <h2 style="margin:0;">Messages from your website's contact form</h2>
+            <p class="section-sub">These are submitted whenever a visitor uses the Contact section on the public site.
+            </p>
+        </div>
+
+        {% if submissions %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Received (UTC)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in submissions %}
+                <tr class="{{ 'unread' if not s.is_read else '' }}">
+                    <td>
+                        {% if s.is_read %}
+                        <span class="badge badge-read">Read</span>
+                        {% else %}
+                        <span class="badge badge-unread">New</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ s.name }}</td>
+                    <td><a href="mailto:{{ s.email }}">{{ s.email }}</a></td>
+                    <td style="max-width: 320px; white-space: pre-wrap;">{{ s.message }}</td>
+                    <td>{{ s.received_at }}</td>
+                    <td class="row-actions">
+                        {% if not s.is_read %}
+                        <form method="POST" action="{{ url_for('admin_mark_read', submission_id=s.id) }}">
+                            <button type="submit" class="btn btn-small">Mark Read</button>
+                        </form>
+                        {% endif %}
+                        <form method="POST" action="{{ url_for('admin_delete', submission_id=s.id) }}"
+                            onsubmit="return confirm('Delete this message?');">
+                            <button type="submit" class="btn btn-small">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">No messages yet. Submissions from the Contact form will appear here.</div>
+        {% endif %}
+    </main>
+</body>
+
+</html>

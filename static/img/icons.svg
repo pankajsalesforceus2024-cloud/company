@@ -1,0 +1,39 @@
+<!-- =============================================================================
+     SELF-AUTHORED SVG ICON SPRITE
+     -----------------------------------------------------------------------
+     All icons in this file are hand-drawn line icons created for this
+     project. They are 100% original, royalty-free, and copyright-free.
+     See ASSETS.md for full documentation. Replace/add <symbol> entries to
+     customize the icon set used by product cards in config.py (PRODUCTS).
+     ============================================================================= -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+  <symbol id="icon-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M6.5 18a4 4 0 1 1 .8-7.93A5.5 5.5 0 0 1 17.9 12.1 3.5 3.5 0 0 1 17 18.9H6.5z" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-cube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" stroke-linejoin="round"/>
+    <path d="M12 3v9m0 9v-9m0 0L4 7.5M12 12l8-4.5" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M4 20V10M12 20V4M20 20v-7" stroke-linecap="round"/>
+    <path d="M3 20h18" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-linejoin="round"/>
+    <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="7" y="2" width="10" height="20" rx="2" stroke-linejoin="round"/>
+    <path d="M11 18h2" stroke-linecap="round"/>
+  </symbol>
+
+</svg>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — {{ company.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .admin-main {
+            padding: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .admin-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .admin-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .admin-card h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .admin-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0 0 18px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--primary);
+            color: #fff;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="nav-logo">
+            <span class="logo-mark">{{ company.logo_initials }}</span>
+            <span class="logo-text">{{ company.name }} Admin</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Logged in as {{ admin_username }}</span>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-small">Log Out</a>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="section-heading" style="text-align:left; margin-bottom: 28px;">
+            <p class="eyebrow">Admin Panel</p>
+            <h2 style="margin:0;">Manage your website's content</h2>
+            <p class="section-sub">Everything here is saved to the database and reflected on the live site
+                immediately — no code edits required.</p>
+        </div>
+
+        <div class="admin-card-grid">
+            <div class="admin-card">
+                <h3>Contact Messages
+                    {% if unread_count %}<span class="badge">{{ unread_count }} new</span>{% endif %}
+                </h3>
+                <p>View, mark as read, or delete messages submitted through the Contact form.</p>
+                <a href="{{ url_for('admin_messages') }}" class="btn btn-small">Open Inbox</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>Site Settings</h3>
+                <p>Company name, tagline, about text, stats, contact details, and theme colors.</p>
+                <a href="{{ url_for('admin_settings') }}" class="btn btn-small">Edit Settings</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>Products / Services <span class="badge">{{ product_count }}</span></h3>
+                <p>Add, edit, or remove the product/service cards shown on the site.</p>
+                <a href="{{ url_for('admin_products') }}" class="btn btn-small">Manage Products</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>Team <span class="badge">{{ team_count }}</span></h3>
+                <p>Add, edit, or remove team members shown on the site.</p>
+                <a href="{{ url_for('admin_team') }}" class="btn btn-small">Manage Team</a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

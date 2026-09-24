@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Edit' if product else 'Add' }} Product — {{ company.name }} Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .admin-main {
+            padding: 32px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .admin-back {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .settings-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .color-input {
+            height: 42px;
+            padding: 4px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="nav-logo">
+            <span class="logo-mark">{{ company.logo_initials }}</span>
+            <span class="logo-text">{{ company.name }} Admin</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Logged in as {{ admin_username }}</span>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-small">Log Out</a>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <a href="{{ url_for('admin_products') }}" class="admin-back">&larr; Back to Products</a>
+        <div class="section-heading" style="text-align:left; margin-bottom: 28px;">
+            <h2 style="margin:0;">{{ 'Edit' if product else 'Add' }} Product</h2>
+        </div>
+
+        <form method="POST" class="settings-card">
+            <div class="form-group"><label>Name</label><input type="text" name="name"
+                    value="{{ product.name if product else '' }}" required></div>
+            <div class="form-group"><label>Tagline</label><input type="text" name="tagline"
+                    value="{{ product.tagline if product else '' }}" required></div>
+            <div class="form-group"><label>Description</label><textarea name="description" rows="4"
+                    required>{{ product.description if product else '' }}</textarea></div>
+            <div class="field-row">
+                <div class="form-group"><label>Price (display text)</label><input type="text" name="price"
+                        value="{{ product.price if product else '' }}" placeholder="$199/mo" required></div>
+                <div class="form-group">
+                    <label>Icon</label>
+                    <select name="icon">
+                        {% for icon in icons %}
+                        <option value="{{ icon }}" {{ 'selected' if product and product.icon==icon else '' }}>{{ icon }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="form-group"><label>Accent Color</label><input class="color-input" type="color" name="color"
+                        value="{{ product.color if product else '#5b8cff' }}"></div>
+                <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order"
+                        value="{{ product.sort_order if product else 0 }}"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ 'Save Changes' if product else 'Add Product' }}</button>
+        </form>
+    </main>
+</body>
+
+</html>

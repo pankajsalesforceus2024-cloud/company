@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Edit' if member else 'Add' }} Team Member — {{ company.name }} Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .admin-main {
+            padding: 32px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .admin-back {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .settings-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .color-input {
+            height: 42px;
+            padding: 4px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="nav-logo">
+            <span class="logo-mark">{{ company.logo_initials }}</span>
+            <span class="logo-text">{{ company.name }} Admin</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Logged in as {{ admin_username }}</span>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-small">Log Out</a>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <a href="{{ url_for('admin_team') }}" class="admin-back">&larr; Back to Team</a>
+        <div class="section-heading" style="text-align:left; margin-bottom: 28px;">
+            <h2 style="margin:0;">{{ 'Edit' if member else 'Add' }} Team Member</h2>
+        </div>
+
+        <form method="POST" class="settings-card">
+            <div class="form-group"><label>Name</label><input type="text" name="name"
+                    value="{{ member.name if member else '' }}" required></div>
+            <div class="form-group"><label>Role</label><input type="text" name="role"
+                    value="{{ member.role if member else '' }}" required></div>
+            <div class="field-row">
+                <div class="form-group"><label>Initials (max 3 letters)</label><input type="text" name="initials"
+                        maxlength="3" value="{{ member.initials if member else '' }}" required></div>
+                <div class="form-group"><label>Avatar Color</label><input class="color-input" type="color" name="color"
+                        value="{{ member.color if member else '#5b8cff' }}"></div>
+            </div>
+            <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order"
+                    value="{{ member.sort_order if member else 0 }}"></div>
+            <button type="submit" class="btn btn-primary">{{ 'Save Changes' if member else 'Add Member' }}</button>
+        </form>
+    </main>
+</body>
+
+</html>

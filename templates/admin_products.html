@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products — {{ company.name }} Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .admin-main {
+            padding: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .admin-back {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .admin-table th {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row-actions form {
+            display: inline;
+        }
+
+        .swatch {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="nav-logo">
+            <span class="logo-mark">{{ company.logo_initials }}</span>
+            <span class="logo-text">{{ company.name }} Admin</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Logged in as {{ admin_username }}</span>
+            <a href="{{ url_for('admin_logout') }}" class="btn btn-small">Log Out</a>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <a href="{{ url_for('admin_dashboard') }}" class="admin-back">&larr; Back to Dashboard</a>
+        <div class="admin-toolbar">
+            <div class="section-heading" style="text-align:left; margin-bottom: 0;">
+                <p class="eyebrow">Services / Products</p>
+                <h2 style="margin:0;">Manage Product Cards</h2>
+            </div>
+            <a href="{{ url_for('admin_product_new') }}" class="btn btn-primary">+ Add Product</a>
+        </div>
+
+        {% if products %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Tagline</th>
+                    <th>Price</th>
+                    <th>Icon</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td><span class="swatch" style="background: {{ p.color }}"></span>{{ p.name }}</td>
+                    <td>{{ p.tagline }}</td>
+                    <td>{{ p.price }}</td>
+                    <td>{{ p.icon }}</td>
+                    <td class="row-actions">
+                        <a href="{{ url_for('admin_product_edit', product_id=p.id) }}" class="btn btn-small">Edit</a>
+                        <form method="POST" action="{{ url_for('admin_product_delete', product_id=p.id) }}"
+                            onsubmit="return confirm('Delete this product?');">
+                            <button type="submit" class="btn btn-small">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">No products yet. Click "+ Add Product" to create one.</div>
+        {% endif %}
+    </main>
+</body>
+
+</html>

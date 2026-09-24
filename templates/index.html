@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }} — {{ company.tagline }}</title>
+    <meta name="description" content="{{ company.about }}">
+
+    <!-- Favicon: self-authored inline SVG, no external asset needed -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%235b8cff%22/><text x=%2250%22 y=%2265%22 font-size=%2245%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>SI</text></svg>">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- =========================================================
+     LOADING SCREEN
+     ========================================================= -->
+    <div id="loader" class="loader">
+        <div class="loader-logo">{{ company.logo_initials }}</div>
+        <div class="loader-bar">
+            <div class="loader-bar-fill"></div>
+        </div>
+        <p class="loader-text">Loading {{ company.name }}…</p>
+    </div>
+
+    <!-- =========================================================
+     NAVIGATION BAR
+     ========================================================= -->
+    <header class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo" data-scroll>
+                <span class="logo-mark">{{ company.logo_initials }}</span>
+                <span class="logo-text">{{ company.name }}</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                {% for link in nav_links %}
+                <a href="#{{ link.id }}" class="nav-link" data-scroll>{{ link.label }}</a>
+                {% endfor %}
+            </nav>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================
+     HERO SECTION — 3D animated scene (Three.js)
+     ========================================================= -->
+    <section id="hero" class="section hero">
+        <canvas id="heroCanvas" class="hero-canvas"></canvas>
+        <div class="hero-content">
+            <p class="eyebrow">Welcome to {{ company.name }}</p>
+            <h1 class="hero-title">{{ company.tagline }}</h1>
+            <p class="hero-sub">{{ company.about }}</p>
+            <div class="hero-actions">
+                <a href="#services" class="btn btn-primary" data-scroll>Explore Services</a>
+                <a href="#contact" class="btn btn-ghost" data-scroll>Get in Touch</a>
+            </div>
+            <p class="hero-hint">Drag to rotate · Hover to interact · Click to burst</p>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+    </section>
+
+    <!-- =========================================================
+     ABOUT SECTION
+     ========================================================= -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow">About Us</p>
+                <h2>Who is {{ company.name }}?</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-copy">
+                    <p>{{ company.about }}</p>
+                    <p>Founded in {{ company.founded_year }}, we blend rigorous engineering
+                        practice with a designer's eye — shipping software that performs as
+                        beautifully as it looks.</p>
+                </div>
+                <div class="about-stats">
+                    {% for stat in company.stats %}
+                    <div class="stat-card">
+                        <div class="stat-value" data-count="{{ stat.value }}">0</div>
+                        <div class="stat-suffix">{{ stat.suffix }}</div>
+                        <div class="stat-label">{{ stat.label }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+     SERVICES / PRODUCTS SECTION
+     ========================================================= -->
+    <section id="services" class="section services">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow">What We Build</p>
+                <h2>Services &amp; Products</h2>
+                <p class="section-sub">Placeholder product data — edit <code>PRODUCTS</code> in config.py to customize.
+                </p>
+            </div>
+            <div class="product-grid">
+                {% for p in products %}
+                <div class="product-card" style="--accent: {{ p.color }}">
+                    <div class="product-icon-wrap">
+                        <svg class="product-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <use href="{{ url_for('static', filename='img/icons.svg') }}#icon-{{ p.icon }}"></use>
+                        </svg>
+                    </div>
+                    <p class="product-tagline">{{ p.tagline }}</p>
+                    <h3 class="product-name">{{ p.name }}</h3>
+                    <p class="product-desc">{{ p.description }}</p>
+                    <div class="product-footer">
+                        <span class="product-price">{{ p.price }}</span>
+                        <button class="btn btn-small">Learn More</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+     TEAM SECTION
+     ========================================================= -->
+    <section id="team" class="section team">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow">Our People</p>
+                <h2>Meet the Team</h2>
+                <p class="section-sub">Placeholder team — edit <code>TEAM</code> in config.py to customize.</p>
+            </div>
+            <div class="team-grid">
+                {% for member in team %}
+                <div class="team-card">
+                    <div class="team-avatar" style="background: linear-gradient(135deg, {{ member.color }}, #0a0e17)">
+                        <span>{{ member.initials }}</span>
+                    </div>
+                    <h4 class="team-name">{{ member.name }}</h4>
+                    <p class="team-role">{{ member.role }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+     CONTACT SECTION
+     ========================================================= -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow">Get In Touch</p>
+                <h2>Let's Build Something Together</h2>
+                <p class="section-sub">Edit <code>CONTACT</code> in config.py to update these details.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-row"><strong>Email</strong><span>{{ contact.email }}</span></div>
+                    <div class="info-row"><strong>Phone</strong><span>{{ contact.phone }}</span></div>
+                    <div class="info-row"><strong>Address</strong><span>{{ contact.address }}</span></div>
+                    <div class="social-row">
+                        <a href="{{ contact.socials.twitter }}" target="_blank" rel="noopener">Twitter</a>
+                        <a href="{{ contact.socials.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+                        <a href="{{ contact.socials.github }}" target="_blank" rel="noopener">GitHub</a>
+                        <a href="{{ contact.socials.instagram }}" target="_blank" rel="noopener">Instagram</a>
+                    </div>
+                </div>
+                <form id="contactForm" class="contact-form" novalidate>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <span class="form-error" data-error-for="name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="form-error" data-error-for="email"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <span class="form-error" data-error-for="message"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span class="btn-label">Send Message</span>
+                    </button>
+                    <p class="form-status" id="formStatus" role="status"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+     FOOTER
+     ========================================================= -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="nav-logo">
+                <span class="logo-mark">{{ company.logo_initials }}</span>
+                <span class="logo-text">{{ company.name }}</span>
+            </div>
+            <p>&copy; {{ year }} {{ company.name }}. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Three.js (MIT License) via CDN — see ASSETS.md -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        window.SITE_THEME = {{ theme | tojson }};
+        window.SITE_PRODUCTS = {{ products | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/scene.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
