@@ -26,6 +26,7 @@ def get_connection():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             email TEXT NOT NULL,
+            phone TEXT NOT NULL DEFAULT '',
             message TEXT NOT NULL,
             received_at TEXT NOT NULL,
             is_read INTEGER NOT NULL DEFAULT 0
@@ -54,6 +55,11 @@ def get_connection():
         );
         """
     )
+    # Migration: add `phone` column for databases created before it existed.
+    columns = [row[1] for row in conn.execute("PRAGMA table_info(submissions)")]
+    if "phone" not in columns:
+        conn.execute("ALTER TABLE submissions ADD COLUMN phone TEXT NOT NULL DEFAULT ''")
+        conn.commit()
     return conn
 
 
@@ -193,11 +199,11 @@ def delete_team_member(member_id):
 # -----------------------------------------------------------------------------
 # Contact form submissions
 # -----------------------------------------------------------------------------
-def add_submission(name, email, message, received_at):
+def add_submission(name, email, phone, message, received_at):
     with get_connection() as conn:
         conn.execute(
-            "INSERT INTO submissions (name, email, message, received_at) VALUES (?, ?, ?, ?)",
-            (name, email, message, received_at),
+            "INSERT INTO submissions (name, email, phone, message, received_at) VALUES (?, ?, ?, ?, ?)",
+            (name, email, phone, message, received_at),
         )
         conn.commit()
 
