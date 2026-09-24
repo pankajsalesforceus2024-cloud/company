@@ -124,6 +124,7 @@
                     <th>Status</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Phone</th>
                     <th>Message</th>
                     <th>Received (UTC)</th>
                     <th>Actions</th>
@@ -141,6 +142,7 @@
                     </td>
                     <td>{{ s.name }}</td>
                     <td><a href="mailto:{{ s.email }}">{{ s.email }}</a></td>
+                    <td><a href="tel:{{ s.phone }}">{{ s.phone }}</a></td>
                     <td style="max-width: 320px; white-space: pre-wrap;">{{ s.message }}</td>
                     <td>{{ s.received_at }}</td>
                     <td class="row-actions">

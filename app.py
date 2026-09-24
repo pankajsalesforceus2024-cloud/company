@@ -104,6 +104,7 @@ def contact():
 
     name = (data.get("name") or "").strip()
     email = (data.get("email") or "").strip()
+    phone = (data.get("phone") or "").strip()
     message = (data.get("message") or "").strip()
 
     errors = {}
@@ -111,14 +112,17 @@ def contact():
         errors["name"] = "Please enter your name."
     if not email or "@" not in email or "." not in email.split("@")[-1]:
         errors["email"] = "Please enter a valid email address."
+    digits = "".join(ch for ch in phone if ch.isdigit())
+    if not phone or len(digits) < 7:
+        errors["phone"] = "Please enter a valid contact number."
     if not message or len(message) < 10:
         errors["message"] = "Message should be at least 10 characters."
 
     if errors:
         return jsonify({"success": False, "errors": errors}), 400
 
-    db.add_submission(name, email, message, datetime.utcnow().isoformat())
-    app.logger.info("New contact submission from %s <%s>", name, email)
+    db.add_submission(name, email, phone, message, datetime.utcnow().isoformat())
+    app.logger.info("New contact submission from %s <%s> (%s)", name, email, phone)
 
     return jsonify({"success": True, "message": "Thanks! We'll be in touch soon."})
 

@@ -113,6 +113,7 @@ form?.addEventListener("submit", async (e) => {
     const payload = {
         name: form.name.value,
         email: form.email.value,
+        phone: form.phone.value,
         message: form.message.value,
     };
 
